@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Complete String Methods Reference — Python for Data Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F7; --panel:#FFFFFF; --panel-2:#F7F9FC;
+  --ink:#152238; --ink-soft:#4C5A76; --ink-faint:#8592AB;
+  --line:#DCE3ED; --line-strong:#C4CEDD;
+  --amber:#D98A2B; --amber-ink:#7A4E0C; --amber-soft:#FBEBD4;
+  --teal:#1F8F7E; --teal-soft:#DFF3EE; --teal-ink:#0E4F44;
+  --code-bg:#101B2D; --code-bg-2:#0C1524; --code-ink:#E7EEF9;
+  --code-kw:#7FB3FF; --code-str:#9BE3A0; --code-com:#77869F; --code-num:#F4B860; --code-fn:#D9A5F0;
+  --radius:16px; --radius-sm:10px;
+  --font-head:'Poppins',sans-serif; --font-body:'Poppins',sans-serif; --font-code:'Fira Code',monospace;
+  --shadow:0 1px 2px rgba(21,34,56,.04), 0 8px 24px rgba(21,34,56,.06);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);line-height:1.6;-webkit-font-smoothing:antialiased;}
+h1,h2,h3{font-family:var(--font-head);margin:0;color:var(--ink);}
+p{margin:0 0 1em 0;color:var(--ink-soft);}
+.container{max-width:1180px;margin:0 auto;padding:0 24px;}
+
+.shell{display:grid;grid-template-columns:250px minmax(0,1fr);max-width:1440px;margin:0 auto;}
+.side{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;padding:26px 16px 26px 22px;border-right:1px solid var(--line);}
+.side::-webkit-scrollbar{width:6px;} .side::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:6px;}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--line);}
+.brand-mark{width:32px;height:32px;border-radius:9px;flex:none;background:linear-gradient(135deg,var(--amber),var(--teal));display:flex;align-items:center;justify-content:center;font-family:var(--font-code);font-weight:600;color:#12233A;font-size:12px;}
+.brand-text{font-size:12px;color:var(--ink-faint);line-height:1.3;}
+.brand-text b{display:block;color:var(--ink);font-size:13.5px;font-weight:600;}
+.navlabel{font-size:10.5px;letter-spacing:.03em;color:var(--ink-faint);margin:16px 0 8px 8px;font-weight:600;}
+.navlink{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:8px;color:var(--ink-soft);text-decoration:none;font-size:12.8px;font-weight:500;transition:background .15s,color .15s;}
+.navlink .cnt{font-family:var(--font-code);font-size:10.5px;color:var(--ink-faint);}
+.navlink:hover{background:var(--panel-2);color:var(--ink);}
+.navlink.active{background:var(--teal-soft);color:var(--teal-ink);}
+.main{min-width:0;}
+
+.hero{padding:48px 0 34px;border-bottom:1px solid var(--line);
+  background:radial-gradient(700px 260px at 88% -10%, var(--amber-soft), transparent 60%),radial-gradient(600px 240px at 8% 0%, var(--teal-soft), transparent 55%);}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--teal-ink);background:var(--teal-soft);border:1px solid color-mix(in srgb, var(--teal) 30%, transparent);padding:5px 12px;border-radius:999px;margin-bottom:16px;}
+.hero h1{font-size:clamp(26px,4vw,38px);font-weight:700;letter-spacing:-.01em;max-width:22ch;}
+.hero p{font-size:15.5px;max-width:66ch;margin-top:12px;}
+.hero-note{margin-top:20px;padding:14px 16px;border-radius:var(--radius-sm);background:var(--panel);border:1px solid var(--line);font-size:13.5px;box-shadow:var(--shadow);}
+
+.cat-section{padding:40px 0;border-bottom:1px solid var(--line);}
+.cat-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;flex-wrap:wrap;}
+.cat-head h2{font-size:21px;font-weight:700;}
+.cat-count{font-family:var(--font-code);font-size:12px;color:var(--ink-faint);}
+.cat-desc{font-size:14px;margin-bottom:20px;max-width:70ch;}
+
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media (max-width:760px){.method-grid{grid-template-columns:1fr;}}
+.method-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;box-shadow:var(--shadow);}
+.method-head{padding:12px 14px 4px;}
+.method-name{font-family:var(--font-code);font-size:14px;font-weight:600;color:var(--teal-ink);}
+.method-desc{font-size:12.8px;color:var(--ink-soft);margin:5px 0 0;}
+.method-code{background:var(--code-bg);margin-top:10px;}
+.method-code pre{margin:0;padding:12px 14px;overflow-x:auto;font-family:var(--font-code);font-size:12.3px;line-height:1.65;color:var(--code-ink);}
+.method-code .kw{color:var(--code-kw);} .method-code .str{color:var(--code-str);} .method-code .com{color:var(--code-com);font-style:italic;}
+.method-code .num{color:var(--code-num);} .method-code .fn{color:var(--code-fn);}
+
+.wrapup{padding:50px 0 60px;}
+.wrapup-card{border-radius:var(--radius);border:1px solid var(--line);background:var(--panel);padding:30px;box-shadow:var(--shadow);}
+.wrapup-card h3{font-size:19px;margin-bottom:10px;}
+footer{padding:26px 0 40px;text-align:center;}
+.credit{font-size:12.5px;color:var(--ink-faint);}
+.credit b{color:var(--ink-soft);}
+@media (max-width:940px){ .shell{grid-template-columns:1fr;} .side{position:static;height:auto;border-right:none;border-bottom:1px solid var(--line);padding:16px;} }
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="sideNav">
+    <div class="brand">
+      <div class="brand-mark">Py</div>
+      <div class="brand-text"><b>String Methods</b>The complete reference</div>
+    </div>
+    <div class="navlabel">Categories</div>
+    <a class="navlink" data-target="cat-case"><span>Changing Case</span><span class="cnt">6</span></a>
+    <a class="navlink" data-target="cat-check"><span>Checking Content</span><span class="cnt">12</span></a>
+    <a class="navlink" data-target="cat-search"><span>Searching &amp; Counting</span><span class="cnt">7</span></a>
+    <a class="navlink" data-target="cat-trim"><span>Trimming &amp; Padding</span><span class="cnt">8</span></a>
+    <a class="navlink" data-target="cat-split"><span>Splitting &amp; Joining</span><span class="cnt">6</span></a>
+    <a class="navlink" data-target="cat-replace"><span>Replacing</span><span class="cnt">5</span></a>
+    <a class="navlink" data-target="cat-format"><span>Formatting</span><span class="cnt">2</span></a>
+    <a class="navlink" data-target="cat-encode"><span>Encoding</span><span class="cnt">1</span></a>
+  </aside>
+
+  <main class="main">
+    <section class="hero">
+      <div class="container">
+        <span class="pill">Reference sheet · all 47 built-in string methods</span>
+        <h1>Every string method Python has, with code you can paste right now</h1>
+        <p>This isn't the shortlist from Module 2. It's every single method that exists on a Python string, grouped by what it actually does, with a working example next to each one. Copy any block, paste it into VS Code, and run it.</p>
+        <div class="hero-note"><b>How to use this:</b> you don't need to memorise all 47. Skim the category headers first, know that a tool for the job exists, and come back here when you actually need it. That's how working engineers use a reference like this too.</div>
+      </div>
+    </section>
+
+    <!-- CATEGORY A: CASE -->
+    <section id="cat-case" class="cat-section">
+      <div class="container">
+        <div class="cat-head"><h2>1. Changing Case</h2><span class="cat-count">6 methods</span></div>
+        <p class="cat-desc">These change how letters are capitalised. None of them touch the original string, remember to reassign if you want to keep the result.</p>
+        <div class="method-grid">
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.upper()</span><p class="method-desc">Converts every letter to uppercase.</p></div>
+            <div class="method-code"><pre>name = <span class="str">"data engineer"</span>
+<span class="fn">print</span>(name.upper())   <span class="com"># DATA ENGINEER</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.lower()</span><p class="method-desc">Converts every letter to lowercase.</p></div>
+            <div class="method-code"><pre>name = <span class="str">"DATA ENGINEER"</span>
+<span class="fn">print</span>(name.lower())   <span class="com"># data engineer</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.capitalize()</span><p class="method-desc">Capitalises only the first letter of the whole string. Everything else goes lowercase.</p></div>
+            <div class="method-code"><pre>title = <span class="str">"python FOR data ENGINEERING"</span>
+<span class="fn">print</span>(title.capitalize())   <span class="com"># Python for data engineering</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.title()</span><p class="method-desc">Capitalises the first letter of every word.</p></div>
+            <div class="method-code"><pre>heading = <span class="str">"python for data engineering"</span>
+<span class="fn">print</span>(heading.title())   <span class="com"># Python For Data Engineering</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.swapcase()</span><p class="method-desc">Flips every uppercase letter to lowercase and every lowercase letter to uppercase.</p></div>
+            <div class="method-code"><pre>mixed = <span class="str">"Hello World"</span>
+<span class="fn">print</span>(mixed.swapcase())   <span class="com"># hELLO wORLD</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.casefold()</span><p class="method-desc">Similar to lower(), but more aggressive. Built for comparing text across different languages fairly.</p></div>
+            <div class="method-code"><pre>word1 = <span class="str">"straße"</span>
+word2 = <span class="str">"strasse"</span>
+<span class="fn">print</span>(word1.casefold() == word2.casefold())   <span class="com"># True</span></pre></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORY B: CHECKING CONTENT -->
+    <section id="cat-check" class="cat-section">
+      <div class="container">
+        <div class="cat-head"><h2>2. Checking Content</h2><span class="cat-count">12 methods</span></div>
+        <p class="cat-desc">Every method here starts with "is" and returns True or False. They're your first line of defense before casting or processing a value, this is exactly the validation habit from the Module 2 deep dive, just the full toolkit.</p>
+        <div class="method-grid">
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.isalnum()</span><p class="method-desc">True if every character is a letter or a number, and there's at least one character.</p></div>
+            <div class="method-code"><pre><span class="fn">print</span>(<span class="str">"Order123"</span>.isalnum())   <span class="com"># True</span>
+<span class="fn">print</span>(<span class="str">"Order 123"</span>.isalnum())  <span class="com"># False - the space breaks it</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.isalpha()</span><p class="method-desc">True only if every character is a letter, nothing else allowed.</p></div>
+            <div class="method-code"><pre><span class="fn">print</span>(<span class="str">"Python"</span>.isalpha())    <span class="com"># True</span>
+<span class="fn">print</span>(<span class="str">"Python3"</span>.isalpha())   <span class="com"># False</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.isascii()</span><p class="method-desc">True if every character fits in standard ASCII, the basic English keyboard set.</p></div>
+            <div class="method-code"><pre><span class="fn">print</span>(<span class="str">"Hello"</span>.isascii())     <span class="com"># True</span>
+<span class="fn">print</span>(<span class="str">"héllo"</span>.isascii())     <span class="com"># False</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.isdecimal()</span><p class="method-desc">The strictest number check. True only for plain decimal digits, 0 through 9.</p></div>
+            <div class="method-code"><pre><span class="fn">print</span>(<span class="str">"123"</span>.isdecimal())     <span class="com"># True</span>
+<span class="fn">print</span>(<span class="str">"12.3"</span>.isdecimal())    <span class="com"># False - the dot breaks it</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.isdigit()</span><p class="method-desc">True for digits, and also a few special digit characters like superscripts.</p></div>
+            <div class="method-code"><pre><span class="fn">print</span>(<span class="str">"123"</span>.isdigit())       <span class="com"># True</span>
+<span class="fn">print</span>(<span class="str">"²3"</span>.isdigit())       <span class="com"># True - superscript still counts</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.isidentifier()</span><p class="method-desc">True if the string could legally be used as a Python variable name.</p></div>
+            <div class="method-code"><pre><span class="fn">print</span>(<span class="str">"batch_size"</span>.isidentifier())   <span class="com"># True</span>
+<span class="fn">print</span>(<span class="str">"2nd_batch"</span>.isidentifier())    <span class="com"># False - can't start with a digit</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.islower()</span><p class="method-desc">True if every cased letter in the string is lowercase.</p></div>
+            <div class="method-code"><pre><span class="fn">print</span>(<span class="str">"data"</span>.islower())      <span class="com"># True</span>
+<span class="fn">print</span>(<span class="str">"Data"</span>.islower())      <span class="com"># False</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.isnumeric()</span><p class="method-desc">The broadest number check, covers digits plus number words and fractions in some scripts.</p></div>
+            <div class="method-code"><pre><span class="fn">print</span>(<span class="str">"123"</span>.isnumeric())     <span class="com"># True</span>
+<span class="fn">print</span>(<span class="str">"½"</span>.isnumeric())       <span class="com"># True</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.isprintable()</span><p class="method-desc">True if every character can actually be displayed. False if there's a newline, tab, or similar hidden character.</p></div>
+            <div class="method-code"><pre><span class="fn">print</span>(<span class="str">"Hello"</span>.isprintable())      <span class="com"># True</span>
+<span class="fn">print</span>(<span class="str">"Hello\n"</span>.isprintable())    <span class="com"># False</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.isspace()</span><p class="method-desc">True only if the string is made up entirely of whitespace.</p></div>
+            <div class="method-code"><pre><span class="fn">print</span>(<span class="str">"   "</span>.isspace())       <span class="com"># True</span>
+<span class="fn">print</span>(<span class="str">"  a  "</span>.isspace())     <span class="com"># False</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.istitle()</span><p class="method-desc">True if the string already follows Title Case, first letter of every word capitalised.</p></div>
+            <div class="method-code"><pre><span class="fn">print</span>(<span class="str">"Data Engineer"</span>.istitle())   <span class="com"># True</span>
+<span class="fn">print</span>(<span class="str">"Data engineer"</span>.istitle())   <span class="com"># False</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.isupper()</span><p class="method-desc">True if every cased letter in the string is uppercase.</p></div>
+            <div class="method-code"><pre><span class="fn">print</span>(<span class="str">"DATA"</span>.isupper())      <span class="com"># True</span>
+<span class="fn">print</span>(<span class="str">"Data"</span>.isupper())      <span class="com"># False</span></pre></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORY C: SEARCHING -->
+    <section id="cat-search" class="cat-section">
+      <div class="container">
+        <div class="cat-head"><h2>3. Searching &amp; Counting</h2><span class="cat-count">7 methods</span></div>
+        <p class="cat-desc">These help you find things inside a string, or check how a string starts and ends, without writing a loop yourself.</p>
+        <div class="method-grid">
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.find()</span><p class="method-desc">Returns the index of the first match. Returns -1 if nothing's found, never crashes.</p></div>
+            <div class="method-code"><pre>text = <span class="str">"customer_id"</span>
+<span class="fn">print</span>(text.find(<span class="str">"_id"</span>))     <span class="com"># 8</span>
+<span class="fn">print</span>(text.find(<span class="str">"xyz"</span>))     <span class="com"># -1</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.rfind()</span><p class="method-desc">Same as find(), but searches from the right and returns the last match's index.</p></div>
+            <div class="method-code"><pre>text = <span class="str">"data_2026_final_2026"</span>
+<span class="fn">print</span>(text.rfind(<span class="str">"2026"</span>))   <span class="com"># 17</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.index()</span><p class="method-desc">Same as find(), but raises a ValueError instead of returning -1 when nothing matches.</p></div>
+            <div class="method-code"><pre>text = <span class="str">"customer_id"</span>
+<span class="fn">print</span>(text.index(<span class="str">"_id"</span>))    <span class="com"># 8</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.rindex()</span><p class="method-desc">Same as index(), but searches from the right.</p></div>
+            <div class="method-code"><pre>text = <span class="str">"data_2026_final_2026"</span>
+<span class="fn">print</span>(text.rindex(<span class="str">"2026"</span>))  <span class="com"># 17</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.count()</span><p class="method-desc">Counts how many times a substring appears.</p></div>
+            <div class="method-code"><pre>text = <span class="str">"mississippi"</span>
+<span class="fn">print</span>(text.count(<span class="str">"s"</span>))      <span class="com"># 4</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.startswith()</span><p class="method-desc">Checks whether a string begins with a given piece of text.</p></div>
+            <div class="method-code"><pre>filename = <span class="str">"transactions_2026.csv"</span>
+<span class="fn">print</span>(filename.startswith(<span class="str">"transactions"</span>))   <span class="com"># True</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.endswith()</span><p class="method-desc">Checks whether a string ends with a given piece of text. The clean way to check a file type.</p></div>
+            <div class="method-code"><pre>filename = <span class="str">"transactions_2026.csv"</span>
+<span class="fn">print</span>(filename.endswith(<span class="str">".csv"</span>))   <span class="com"># True</span></pre></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORY D: TRIMMING & PADDING -->
+    <section id="cat-trim" class="cat-section">
+      <div class="container">
+        <div class="cat-head"><h2>4. Trimming &amp; Padding</h2><span class="cat-count">8 methods</span></div>
+        <p class="cat-desc">These clean up messy edges, or add extra characters to force a string to a specific width. Great for reports and fixed-width IDs.</p>
+        <div class="method-grid">
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.strip()</span><p class="method-desc">Removes whitespace, or specific characters you name, from both ends.</p></div>
+            <div class="method-code"><pre>raw = <span class="str">"   Data Engineer   "</span>
+<span class="fn">print</span>(raw.strip())   <span class="com"># "Data Engineer"</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.lstrip()</span><p class="method-desc">Removes whitespace (or named characters) from the left side only.</p></div>
+            <div class="method-code"><pre>raw = <span class="str">"   Data Engineer"</span>
+<span class="fn">print</span>(raw.lstrip())   <span class="com"># "Data Engineer"</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.rstrip()</span><p class="method-desc">Removes whitespace (or named characters) from the right side only.</p></div>
+            <div class="method-code"><pre>raw = <span class="str">"Data Engineer   "</span>
+<span class="fn">print</span>(raw.rstrip())   <span class="com"># "Data Engineer"</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.ljust()</span><p class="method-desc">Pads a string on the right with a filler character until it hits a target width. The text stays left-aligned.</p></div>
+            <div class="method-code"><pre>code = <span class="str">"T1"</span>
+<span class="fn">print</span>(code.ljust(<span class="num">6</span>, <span class="str">"0"</span>))   <span class="com"># "T10000"</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.rjust()</span><p class="method-desc">Pads a string on the left. The text stays right-aligned.</p></div>
+            <div class="method-code"><pre>code = <span class="str">"T1"</span>
+<span class="fn">print</span>(code.rjust(<span class="num">6</span>, <span class="str">"0"</span>))   <span class="com"># "0000T1"</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.center()</span><p class="method-desc">Pads on both sides to center the text inside a given width.</p></div>
+            <div class="method-code"><pre>title = <span class="str">"REPORT"</span>
+<span class="fn">print</span>(title.center(<span class="num">20</span>, <span class="str">"-"</span>))   <span class="com"># -------REPORT-------</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.zfill()</span><p class="method-desc">Pads a number-like string with leading zeros until it reaches a given length. Perfect for fixed-width codes.</p></div>
+            <div class="method-code"><pre>branch_code = <span class="str">"7"</span>
+<span class="fn">print</span>(branch_code.zfill(<span class="num">4</span>))   <span class="com"># "0007"</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.expandtabs()</span><p class="method-desc">Replaces every tab character with spaces, useful for lining up plain-text tables neatly.</p></div>
+            <div class="method-code"><pre>row = <span class="str">"id\tname\tamount"</span>
+<span class="fn">print</span>(row.expandtabs(<span class="num">10</span>))</pre></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORY E: SPLITTING & JOINING -->
+    <section id="cat-split" class="cat-section">
+      <div class="container">
+        <div class="cat-head"><h2>5. Splitting &amp; Joining</h2><span class="cat-count">6 methods</span></div>
+        <p class="cat-desc">These break one string into several pieces, or glue several pieces back into one. This is how you'll parse almost every raw line of text you ever read.</p>
+        <div class="method-grid">
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.split()</span><p class="method-desc">Breaks a string into a list, using a separator. Default separator is any whitespace.</p></div>
+            <div class="method-code"><pre>row = <span class="str">"T001,Aravind,4599"</span>
+<span class="fn">print</span>(row.split(<span class="str">","</span>))   <span class="com"># ['T001', 'Aravind', '4599']</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.rsplit()</span><p class="method-desc">Splits from the right. Useful when you want to control how many splits happen counting from the end.</p></div>
+            <div class="method-code"><pre>path = <span class="str">"data/incoming/2026/file.csv"</span>
+<span class="fn">print</span>(path.rsplit(<span class="str">"/"</span>, <span class="num">1</span>))   <span class="com"># ['data/incoming/2026', 'file.csv']</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.splitlines()</span><p class="method-desc">Splits a multi-line string into a list, one item per line.</p></div>
+            <div class="method-code"><pre>log = <span class="str">"Line 1\nLine 2\nLine 3"</span>
+<span class="fn">print</span>(log.splitlines())   <span class="com"># ['Line 1', 'Line 2', 'Line 3']</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.partition()</span><p class="method-desc">Splits into exactly 3 parts on the first match: before, the separator itself, and after.</p></div>
+            <div class="method-code"><pre>email = <span class="str">"ravi@intellibi.com"</span>
+<span class="fn">print</span>(email.partition(<span class="str">"@"</span>))   <span class="com"># ('ravi', '@', 'intellibi.com')</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.rpartition()</span><p class="method-desc">Same as partition(), but splits on the last match instead of the first.</p></div>
+            <div class="method-code"><pre>path = <span class="str">"data/incoming/file.csv"</span>
+<span class="fn">print</span>(path.rpartition(<span class="str">"/"</span>))   <span class="com"># ('data/incoming', '/', 'file.csv')</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.join()</span><p class="method-desc">Glues a list of strings together, using this string as the separator between each piece.</p></div>
+            <div class="method-code"><pre>columns = [<span class="str">"id"</span>, <span class="str">"name"</span>, <span class="str">"amount"</span>]
+<span class="fn">print</span>(<span class="str">","</span>.join(columns))   <span class="com"># "id,name,amount"</span></pre></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORY F: REPLACING -->
+    <section id="cat-replace" class="cat-section">
+      <div class="container">
+        <div class="cat-head"><h2>6. Replacing &amp; Modifying</h2><span class="cat-count">5 methods</span></div>
+        <p class="cat-desc">These change specific parts of a string, whether that's one substring, a whole set of characters at once, or a fixed prefix or suffix.</p>
+        <div class="method-grid">
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.replace()</span><p class="method-desc">Swaps every occurrence of one substring for another.</p></div>
+            <div class="method-code"><pre>date = <span class="str">"2026-01-15"</span>
+<span class="fn">print</span>(date.replace(<span class="str">"-"</span>, <span class="str">"/"</span>))   <span class="com"># "2026/01/15"</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.translate()</span><p class="method-desc">Replaces characters based on a translation table. Faster than chaining several replace() calls.</p></div>
+            <div class="method-code"><pre>table = <span class="kw">str</span>.maketrans(<span class="str">"aeiou"</span>, <span class="str">"12345"</span>)
+text = <span class="str">"data engineer"</span>
+<span class="fn">print</span>(text.translate(table))   <span class="com"># "d1t1 2ng1n22r"</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.maketrans()</span><p class="method-desc">Builds the translation table that translate() actually uses. Called on the str class itself, not an instance.</p></div>
+            <div class="method-code"><pre>table = <span class="kw">str</span>.maketrans(<span class="str">"ab"</span>, <span class="str">"12"</span>)
+<span class="fn">print</span>(table)   <span class="com"># {97: 49, 98: 50}</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.removeprefix()</span><p class="method-desc">Removes a piece of text from the start, only if it's actually there. Python 3.9 and above.</p></div>
+            <div class="method-code"><pre>filename = <span class="str">"raw_transactions.csv"</span>
+<span class="fn">print</span>(filename.removeprefix(<span class="str">"raw_"</span>))   <span class="com"># "transactions.csv"</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.removesuffix()</span><p class="method-desc">Removes a piece of text from the end, only if it's actually there. Python 3.9 and above.</p></div>
+            <div class="method-code"><pre>filename = <span class="str">"transactions.csv"</span>
+<span class="fn">print</span>(filename.removesuffix(<span class="str">".csv"</span>))   <span class="com"># "transactions"</span></pre></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORY G: FORMATTING -->
+    <section id="cat-format" class="cat-section">
+      <div class="container">
+        <div class="cat-head"><h2>7. Formatting</h2><span class="cat-count">2 methods</span></div>
+        <p class="cat-desc">These insert values into a template string. You already know f-strings from Module 2, these two are the older, still-common alternative.</p>
+        <div class="method-grid">
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.format()</span><p class="method-desc">Inserts values into placeholders inside a string, in the order you pass them.</p></div>
+            <div class="method-code"><pre>template = <span class="str">"Pipeline {} processed {} rows"</span>
+<span class="fn">print</span>(template.format(<span class="str">"orders_etl"</span>, <span class="num">500</span>))
+<span class="com"># "Pipeline orders_etl processed 500 rows"</span></pre></div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.format_map()</span><p class="method-desc">Like format(), but takes one dictionary directly instead of separate arguments.</p></div>
+            <div class="method-code"><pre>data = {<span class="str">"pipeline"</span>: <span class="str">"orders_etl"</span>, <span class="str">"rows"</span>: <span class="num">500</span>}
+template = <span class="str">"Pipeline {pipeline} processed {rows} rows"</span>
+<span class="fn">print</span>(template.format_map(data))</pre></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORY H: ENCODING -->
+    <section id="cat-encode" class="cat-section">
+      <div class="container">
+        <div class="cat-head"><h2>8. Encoding</h2><span class="cat-count">1 method</span></div>
+        <p class="cat-desc">Only one method here, but an important one. It converts readable text into bytes, the form data actually needs to be in before it travels over a network or gets saved in certain file formats.</p>
+        <div class="method-grid">
+
+          <div class="method-card">
+            <div class="method-head"><span class="method-name">.encode()</span><p class="method-desc">Converts a string into bytes, using the character encoding you specify.</p></div>
+            <div class="method-code"><pre>text = <span class="str">"Hello"</span>
+<span class="fn">print</span>(text.encode(<span class="str">"utf-8"</span>))   <span class="com"># b'Hello'</span></pre></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="wrapup">
+      <div class="container">
+        <div class="wrapup-card">
+          <span class="pill">✅ All 47, done</span>
+          <h3 style="margin-top:12px;">That's every string method Python has.</h3>
+          <p>You don't need all 47 memorised. What you need is to know this page exists, and roughly which category to check when a text-cleaning problem shows up. The ones you'll reach for constantly, strip(), split(), replace(), join(), the is-checks, are already second nature from Module 2. Everything else here is backup, ready when the job actually calls for it.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <p class="credit">The Complete String Methods Reference · Python for Data Engineering — <b>IntelliBI</b><br>
+        Curated &amp; taught by <b>Siddhant Deepak Kumar Pradhan</b>, Data Engineering &amp; AI Faculty</p>
+      </div>
+    </footer>
+  </main>
+</div>
+
+<script>
+var navLinks = document.querySelectorAll('.navlink');
+var sectionIds = ['cat-case','cat-check','cat-search','cat-trim','cat-split','cat-replace','cat-format','cat-encode'];
+navLinks.forEach(function(link){
+  link.addEventListener('click', function(e){
+    e.preventDefault();
+    var target = document.getElementById(link.getAttribute('data-target'));
+    if(target){ target.scrollIntoView({behavior:'smooth', block:'start'}); }
+  });
+});
+function updateActive(){
+  var scrollPos = window.scrollY + window.innerHeight * 0.3;
+  var activeIdx = 0;
+  sectionIds.forEach(function(id, i){
+    var el = document.getElementById(id);
+    if(el && el.offsetTop <= scrollPos) activeIdx = i;
+  });
+  navLinks.forEach(function(link, i){ link.classList.toggle('active', i === activeIdx); });
+}
+window.addEventListener('scroll', updateActive);
+window.addEventListener('resize', updateActive);
+updateActive();
+</script>
+</body>
+</html>
